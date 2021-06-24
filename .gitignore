@@ -89,4 +89,4 @@ lint/tmp/
 *.hprof
 
 # Version Scheme
-# app/version.properties
+app/version.properties
