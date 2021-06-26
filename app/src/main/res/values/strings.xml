@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Opaku</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_nav_m_home">Home</string>
+    <string name="bottom_nav_m_explore">Explore</string>
+    <string name="bottom_nav_m_cart">Cart</string>
+    <string name="bottom_nav_m_offer">Offer</string>
+    <string name="bottom_nav_m_account">Account</string>
+    <string name="home_category">Category</string>
+    <string name="home_more_category">More Category</string>
+
+    <string name="item_product_discount">%1$d\%% Off</string>
+    <string name="item_product_selling_price">$ %d</string>
+    <string name="item_product_original_price">$ %s</string>
+
+
 </resources>

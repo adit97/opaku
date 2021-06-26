@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemModel"
+            type="com.opaku.id.core.domain.model.ProductModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_toolbar_search"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_product"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setImageResource="@{itemModel.image}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
+            tools:src="@drawable/shoes_1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:text="@{itemModel.name}"
+            android:textAlignment="textStart"
+            android:textColor="@color/dark"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintStart_toStartOf="@+id/iv_product"
+            app:layout_constraintTop_toBottomOf="@+id/iv_product"
+            tools:text="Man Shirt" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_selling_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/blue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintStart_toStartOf="@+id/iv_product"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+            app:setTextCurrency="@{itemModel.price}"
+            app:setFlagStrike="@{false}"
+            tools:text="Rp 200.000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/grey"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_product_discount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/iv_product"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_selling_price"
+            app:setFlagStrike="@{true}"
+            app:setTextCurrency="@{itemModel.price}"
+            tools:ignore="SmallSp"
+            tools:text="Rp 200.000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_discount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/item_product_discount(itemModel.discount)}"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_product_price"
+            app:layout_constraintTop_toTopOf="@+id/tv_product_price"
+            tools:ignore="SmallSp"
+            tools:text="20% Off" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

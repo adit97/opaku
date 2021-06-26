@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".App"
         android:theme="@style/Theme.Opaku">
-        <activity android:name=".ui.home.DashboardActivity" />
+        <activity android:name=".ui.home.DashboardActivity"
+            android:theme="@style/Theme.Opaku.NoActionBar"/>
         <activity android:name=".ui.splashscreen.SplashScreenActivity"
             android:theme="@style/Theme.Opaku.SplashScreen">
             <intent-filter>

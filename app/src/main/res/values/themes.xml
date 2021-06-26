@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Opaku" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -16,5 +16,15 @@
 
     <style name="Theme.Opaku.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/blue</item>
+    </style>
+
+    <style name="Theme.Opaku.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/blue</item>
+        <item name="android:colorEdgeEffect">@color/blue</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize5Percent" parent="">
+        <item name="cornerSize">5%</item>
     </style>
 </resources>
