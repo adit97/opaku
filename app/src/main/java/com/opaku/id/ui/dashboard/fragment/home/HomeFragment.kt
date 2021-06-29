@@ -1,5 +1,6 @@
-package com.opaku.id.ui.home.fragment.home
+package com.opaku.id.ui.dashboard.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.opaku.id.R
+import com.opaku.id.core.data.Resource
 import com.opaku.id.core.domain.model.CategoryModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
@@ -14,7 +16,9 @@ import com.opaku.id.core.ui.recyclerview.GridSpacingItemDecoration
 import com.opaku.id.core.ui.recyclerview.HorizontalSpacingItemDecoration
 import com.opaku.id.core.ui.viewpager.GeneralViewPagerAdapter
 import com.opaku.id.databinding.FragmentHomeBinding
-import com.opaku.id.ui.home.fragment.home.fragment.BannerFragment
+import com.opaku.id.ui.dashboard.fragment.home.fragment.BannerFragment
+import com.opaku.id.ui.detailproduct.DetailProductActivity
+import com.opaku.id.ui.favoriteproduct.FavoriteProductActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,6 +46,13 @@ class HomeFragment : Fragment() {
     private fun initView() {
         setupBinding()
         setupViewModel()
+        setupOnClickEvent()
+    }
+
+    private fun setupOnClickEvent() {
+        binding.ivFavorite.setOnClickListener {
+            startActivity(Intent(requireActivity(), FavoriteProductActivity::class.java))
+        }
     }
 
     private fun setupBinding() {
@@ -70,7 +81,7 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product,
                     onClickListener = { model, position ->
-
+                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
                     },
                     onLongClickListener = { position ->
 
@@ -84,7 +95,7 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product,
                     onClickListener = { model, position ->
-
+                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
                     },
                     onLongClickListener = { position ->
 
@@ -98,7 +109,7 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product_grid,
                     onClickListener = { model, position ->
-
+                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
                     },
                     onLongClickListener = { position ->
 
@@ -111,108 +122,24 @@ class HomeFragment : Fragment() {
 
     private fun setupViewModel() {
         viewModel.categoryList.value = getCategory()
-        viewModel.flashSaleProductList.value = getFlashSaleProduct()
-        viewModel.recommendedProductList.value = getRecommendedSaleProduct()
+        try {
+            viewModel.getProducts.observe(viewLifecycleOwner, {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        viewModel.recommendedProductList.value = it.data
+                        viewModel.flashSaleProductList.value = it.data
+                        viewModel.recommendedProductList.value = it.data
+                    }
+                    is Resource.Error -> {
+                    }
+                }
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
-
-    private fun getFlashSaleProduct(): List<ProductModel> =
-        listOf(
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            )
-        )
-
-    private fun getRecommendedSaleProduct(): List<ProductModel> =
-        listOf(
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            ),
-            ProductModel(
-                1,
-                R.drawable.shoes_1,
-                "FS - Nike Air Max 270 React",
-                200000,
-                20
-            )
-        )
 
     private fun getCategory(): List<CategoryModel> {
         return listOf(

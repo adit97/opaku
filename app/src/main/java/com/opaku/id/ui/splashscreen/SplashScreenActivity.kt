@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.opaku.id.R
-import com.opaku.id.ui.home.DashboardActivity
+import com.opaku.id.ui.dashboard.DashboardActivity
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

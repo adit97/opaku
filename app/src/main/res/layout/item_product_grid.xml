@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="itemModel"
             type="com.opaku.id.core.domain.model.ProductModel" />
@@ -26,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setImageResource="@{itemModel.image}"
+            app:setImageResource="@{itemModel.preview.get(0)}"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
             tools:src="@drawable/shoes_1" />
 
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:maxLines="2"
+            android:minLines="2"
             android:text="@{itemModel.name}"
             android:textAlignment="textStart"
             android:textColor="@color/dark"
@@ -54,11 +57,11 @@
             android:textColor="@color/blue"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete_product"
             app:layout_constraintStart_toStartOf="@+id/iv_product"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
-            app:setTextCurrency="@{itemModel.price}"
             app:setFlagStrike="@{false}"
+            app:setTextCurrency="@{itemModel.variantPriceModel[0].price}"
             tools:text="Rp 200.000" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -75,7 +78,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_product"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_selling_price"
             app:setFlagStrike="@{true}"
-            app:setTextCurrency="@{itemModel.price}"
+            app:setTextCurrency="@{itemModel.variantPriceModel[0].originalPrice}"
             tools:ignore="SmallSp"
             tools:text="Rp 200.000" />
 
@@ -83,16 +86,26 @@
             android:id="@+id/tv_product_discount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/item_product_discount(itemModel.discount)}"
+            android:text="@{@string/item_product_discount(itemModel.variantPriceModel[0].discount)}"
             android:textColor="@color/red"
             android:textSize="10sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete_product"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tv_product_price"
             app:layout_constraintTop_toTopOf="@+id/tv_product_price"
             tools:ignore="SmallSp"
             tools:text="20% Off" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_delete_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_trash"
+            android:visibility="@{itemModel.favorite ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

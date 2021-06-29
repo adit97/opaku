@@ -19,7 +19,7 @@
             android:id="@+id/iv_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_item_category_home"
+            android:background="@drawable/bg_item_oval_light"
             android:padding="23dp"
             app:setImageResource="@{itemModel.icon}"
             app:layout_constraintStart_toStartOf="parent"

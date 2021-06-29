@@ -1,4 +1,4 @@
-package com.opaku.id.ui.home.fragment.explore
+package com.opaku.id.ui.dashboard.fragment.cart
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.opaku.id.R
 
-class ExploreFragment : Fragment() {
+class CartFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_explore, container, false)
+        return inflater.inflate(R.layout.fragment_cart, container, false)
     }
 
     companion object {
-        fun newInstance() = ExploreFragment()
+        fun newInstance() = CartFragment()
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemModel"
+            type="com.opaku.id.core.domain.model.ProductColorModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_product_color"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            app:isSelected="@{itemModel.selected}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setBackgroundResource="@{itemModel.color}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundedCornerSize50Percent"
+            app:strokeWidth="@{itemModel.selected ? @dimen/stroke_8 : @dimen/stroke_0}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

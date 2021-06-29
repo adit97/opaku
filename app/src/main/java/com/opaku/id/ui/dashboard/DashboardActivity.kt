@@ -1,4 +1,4 @@
-package com.opaku.id.ui.home
+package com.opaku.id.ui.dashboard
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.opaku.id.R
 import com.opaku.id.databinding.ActivityDashboardBinding
-import com.opaku.id.ui.home.fragment.account.AccountFragment
-import com.opaku.id.ui.home.fragment.cart.CartFragment
-import com.opaku.id.ui.home.fragment.explore.ExploreFragment
-import com.opaku.id.ui.home.fragment.home.HomeFragment
-import com.opaku.id.ui.home.fragment.offer.OfferFragment
+import com.opaku.id.ui.dashboard.fragment.account.AccountFragment
+import com.opaku.id.ui.dashboard.fragment.cart.CartFragment
+import com.opaku.id.ui.dashboard.fragment.explore.ExploreFragment
+import com.opaku.id.ui.dashboard.fragment.home.HomeFragment
+import com.opaku.id.ui.dashboard.fragment.offer.OfferFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
