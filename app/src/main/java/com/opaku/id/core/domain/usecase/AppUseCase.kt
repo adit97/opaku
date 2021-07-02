@@ -6,4 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppUseCase {
     fun getProducts(): Flow<Resource<List<ProductModel>>>
+    suspend fun addFavoriteProduct(productId: String)
+    fun favoriteProducts(): Flow<List<String>>
+    fun deleteFavoriteProduct(productId: String)
+    fun isFavoriteProduct(productId: String): Flow<String>
 }

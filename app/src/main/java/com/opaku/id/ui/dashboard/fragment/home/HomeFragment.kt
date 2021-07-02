@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.opaku.id.R
 import com.opaku.id.core.data.Resource
+import com.opaku.id.core.domain.model.BannerModel
 import com.opaku.id.core.domain.model.CategoryModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
 import com.opaku.id.core.ui.recyclerview.GridSpacingItemDecoration
 import com.opaku.id.core.ui.recyclerview.HorizontalSpacingItemDecoration
 import com.opaku.id.core.ui.viewpager.GeneralViewPagerAdapter
+import com.opaku.id.core.utils.Constant.PRODUCT
 import com.opaku.id.databinding.FragmentHomeBinding
 import com.opaku.id.ui.dashboard.fragment.home.fragment.BannerFragment
 import com.opaku.id.ui.detailproduct.DetailProductActivity
@@ -81,7 +83,12 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product,
                     onClickListener = { model, position ->
-                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                DetailProductActivity::class.java
+                            ).putExtra(PRODUCT, model)
+                        )
                     },
                     onLongClickListener = { position ->
 
@@ -95,7 +102,12 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product,
                     onClickListener = { model, position ->
-                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                DetailProductActivity::class.java
+                            ).putExtra(PRODUCT, model)
+                        )
                     },
                     onLongClickListener = { position ->
 
@@ -109,7 +121,12 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<ProductModel>(
                     layoutId = R.layout.item_product_grid,
                     onClickListener = { model, position ->
-                        startActivity(Intent(requireActivity(), DetailProductActivity::class.java))
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                DetailProductActivity::class.java
+                            ).putExtra(PRODUCT, model)
+                        )
                     },
                     onLongClickListener = { position ->
 
@@ -122,23 +139,19 @@ class HomeFragment : Fragment() {
 
     private fun setupViewModel() {
         viewModel.categoryList.value = getCategory()
-        try {
-            viewModel.getProducts.observe(viewLifecycleOwner, {
-                when (it) {
-                    is Resource.Loading -> {
-                    }
-                    is Resource.Success -> {
-                        viewModel.recommendedProductList.value = it.data
-                        viewModel.flashSaleProductList.value = it.data
-                        viewModel.recommendedProductList.value = it.data
-                    }
-                    is Resource.Error -> {
-                    }
+        viewModel.getProducts.observe(viewLifecycleOwner, {
+            when (it) {
+                is Resource.Loading -> {
                 }
-            })
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+                is Resource.Success -> {
+                    viewModel.recommendedProductList.value = it.data
+                    viewModel.flashSaleProductList.value = it.data
+                    viewModel.recommendedProductList.value = it.data
+                }
+                is Resource.Error -> {
+                }
+            }
+        })
     }
 
     private fun getCategory(): List<CategoryModel> {
@@ -172,8 +185,20 @@ class HomeFragment : Fragment() {
 
     private fun getBannerAdapter() = GeneralViewPagerAdapter(
         requireActivity(), listOf(
-            BannerFragment.newInstance(R.drawable.promotion_image_1),
-            BannerFragment.newInstance(R.drawable.promotion_image_2),
+            BannerFragment.newInstance(
+                BannerModel(
+                    "promotion_image_1.png",
+                    "Super Flash Sale\n50% Off",
+                    86400000
+                )
+            ),
+            BannerFragment.newInstance(
+                BannerModel(
+                    "promotion_image_2.png",
+                    "Super Flash Sale\n50% Off",
+                    86400000
+                )
+            )
         )
     )
 

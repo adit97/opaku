@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>Bath</item>
+        <item>Baby Walker</item>
+        <item>Gear</item>
+        <item>Feed</item>
+        <item>Toy</item>
+        <item>Stoller</item>
+        <item>Diaper</item>
+        <item>Boy Cloth</item>
+        <item>Boy Shoes</item>
+        <item>Boy Accessorise</item>
+        <item>Boy Sock</item>
+        <item>Girl Cloth</item>
+        <item>Girl Shoes</item>
+        <item>Girl Accessorise</item>
+        <item>Girl Sock</item>
+    </string-array>
+</resources>

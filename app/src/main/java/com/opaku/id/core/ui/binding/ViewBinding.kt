@@ -3,15 +3,17 @@ package com.opaku.id.core.ui.binding
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
-import android.util.TypedValue
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.opaku.id.R
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
+import com.opaku.id.core.utils.setImageDrawableFromServer
+import com.opaku.id.core.utils.toDp
 import java.text.DecimalFormat
 
 @BindingAdapter(value = ["populateItems"])
@@ -28,14 +30,7 @@ fun AppCompatImageView.setImageResource(
     resource: String?
 ) {
     if (resource != null) {
-        val drawable = Drawable.createFromResourceStream(
-            resources,
-            TypedValue(),
-            resources.assets.open("img/$resource"),
-            null
-        )
-
-        this.setImageDrawable(drawable)
+        setImageDrawableFromServer(resource)
     }
 }
 
@@ -68,5 +63,21 @@ fun ShapeableImageView.setBackgroundResource(
             this.setBackgroundColor(Color.parseColor(resource))
             this.setStrokeColorResource(R.color.white)
         }
+    }
+}
+
+@BindingAdapter("populateReviewImage")
+fun LinearLayoutCompat.populateReviewImage(
+    resource: List<String>?
+) {
+    val lp = LinearLayoutCompat.LayoutParams(context.toDp(48), context.toDp(48))
+    lp.setMargins(0, 0, 16, 0)
+    resource?.forEach {
+        val iv = ShapeableImageView(context)
+        iv.layoutParams = lp
+        iv.scaleType = ImageView.ScaleType.CENTER_CROP
+        iv.shapeAppearanceModel = iv.shapeAppearanceModel.toBuilder().setAllCornerSizes(16f).build()
+        iv.setImageDrawableFromServer(it)
+        this.addView(iv)
     }
 }

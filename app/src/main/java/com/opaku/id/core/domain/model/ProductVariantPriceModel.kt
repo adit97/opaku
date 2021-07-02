@@ -1,6 +1,9 @@
 package com.opaku.id.core.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ProductVariantPriceModel(
     val size: ProductVariantModel,
     val color: ProductColorModel,
@@ -8,4 +11,4 @@ data class ProductVariantPriceModel(
     val price: Double,
     val originalPrice: Double,
     val discount: Int
-)
+) : Parcelable

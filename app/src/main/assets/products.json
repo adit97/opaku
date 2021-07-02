@@ -155,7 +155,13 @@
       }
     ],
     "variant": [],
-    "color": [],
+    "color": [
+      "#FDBBA5",
+      "#777777",
+      "#006FC1",
+      "#99DDD8",
+      "#FDBBA5"
+    ],
     "reviews": [
       {
         "user": "Elessar",
@@ -205,7 +211,11 @@
       }
     ],
     "variant": [],
-    "color": [],
+    "color": [
+      "#202849",
+      "#E62C33",
+      "#CECECE"
+    ],
     "reviews": [
       {
         "user": "Elessar",

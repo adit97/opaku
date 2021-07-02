@@ -48,6 +48,97 @@
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Super Flash Sale\n50% Off"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/iv_banner"
+            app:layout_constraintTop_toTopOf="@+id/iv_banner" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_item_rectangle"
+            android:padding="8dp"
+            android:text="08"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="24dp"
+            android:textAlignment="center"
+            android:textColor="@color/dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_banner"
+            app:layout_constraintStart_toStartOf="@id/iv_banner" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_count_div_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text=":"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_hour"
+            app:layout_constraintStart_toEndOf="@+id/tv_hour"
+            app:layout_constraintTop_toTopOf="@+id/tv_hour" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_item_rectangle"
+            android:padding="8dp"
+            android:includeFontPadding="false"
+            android:text="18"
+            android:textAlignment="center"
+            android:textColor="@color/dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/tv_count_div_1"
+            app:layout_constraintTop_toTopOf="@+id/tv_hour" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_count_div_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textColor="@color/white"
+            android:includeFontPadding="false"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_count_div_1"
+            app:layout_constraintStart_toEndOf="@+id/tv_minute"
+            app:layout_constraintTop_toTopOf="@+id/tv_count_div_1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_second"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_item_rectangle"
+            android:padding="8dp"
+            android:text="30"
+            android:includeFontPadding="false"
+            android:textAlignment="center"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/tv_count_div_2"
+            app:layout_constraintTop_toTopOf="@+id/tv_minute" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_flash_sale_product"
             android:layout_width="0dp"

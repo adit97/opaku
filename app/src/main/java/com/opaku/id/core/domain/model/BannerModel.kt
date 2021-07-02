@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductColorModel(
-    val color: String?,
-    var isSelected: Boolean = false
+data class BannerModel(
+    val image: String,
+    val title: String,
+    val time: Long
 ) : Parcelable

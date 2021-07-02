@@ -14,7 +14,7 @@ object ResponseToModel {
                     ProductModel(
                         id = id,
                         name = name,
-                        rate = rate,
+                        rate = rate.toFloat(),
                         category = category,
                         weight = weight,
                         preview = preview,
@@ -84,7 +84,7 @@ object ResponseToModel {
                 listModel.add(
                     ProductReviewModel(
                         user = user,
-                        rate = rate,
+                        rate = rate.toFloat(),
                         review = review,
                         images = images
                     )

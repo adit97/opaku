@@ -2,45 +2,56 @@ package com.opaku.id.ui.detailproduct
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.opaku.id.core.domain.model.ProductColorModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import com.opaku.id.core.domain.model.ProductModel
-import com.opaku.id.core.domain.model.ProductVariantModel
 import com.opaku.id.core.domain.usecase.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
 @HiltViewModel
-class DetailProductViewModel @Inject constructor(appUseCase: AppUseCase) : ViewModel() {
-    val productSizeList = MutableLiveData<List<ProductVariantModel>>()
-    val productColorList = MutableLiveData<List<ProductColorModel>>()
+class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : ViewModel() {
+    val product = MutableLiveData<ProductModel>()
     val productRecommendedList = MutableLiveData<List<ProductModel>>()
 
-    fun setProductSizeSelected(position: Int) {
-        val tempData = productSizeList.value
+    val getRelatedProducts = appUseCase.getProducts().asLiveData()
 
-        if (!tempData.isNullOrEmpty()) {
-            tempData.forEach {
+    fun setProductSizeSelected(position: Int) {
+        val tempData = product.value
+
+        if (tempData != null) {
+            tempData.variant.forEach {
                 it.isSelected = false
             }
 
-            tempData[position].isSelected = true
-            productSizeList.value = tempData!!
+            tempData.variant[position].isSelected = true
+            product.value = tempData!!
         }
     }
 
     fun setProductColorSelected(position: Int) {
-        val tempData = productColorList.value
+        val tempData = product.value
 
-        if (!tempData.isNullOrEmpty()) {
-            tempData.forEach {
+        if (tempData != null) {
+            tempData.color.forEach {
                 it.isSelected = false
             }
 
-            tempData[position].isSelected = true
-            productColorList.value = tempData!!
+            tempData.color[position].isSelected = true
+            product.value = tempData!!
         }
     }
 
+    suspend fun setFavorite() {
+        if (isFavorite.value == null) {
+            product.value?.let { appUseCase.addFavoriteProduct(it.id) }
+        } else {
+            product.value?.let { appUseCase.deleteFavoriteProduct(it.id) }
+        }
+    }
 
+    val isFavorite = product.switchMap {
+        appUseCase.isFavoriteProduct(it.id).asLiveData()
+    }
 }
