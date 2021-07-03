@@ -5,7 +5,12 @@ import com.google.gson.Gson
 import com.opaku.id.core.data.source.remote.network.ApiResponse
 import com.opaku.id.core.data.source.remote.network.ApiService
 import com.opaku.id.core.data.source.remote.response.ProductsResponse
+import com.opaku.id.core.data.source.remote.response.UserResponse
+import com.opaku.id.core.data.source.remote.response.UserResponseItem
+import com.opaku.id.core.domain.model.UserModel
 import com.opaku.id.core.utils.parsingFileToString
+import com.opaku.id.core.utils.parsingFileToStringFromInternalStorage
+import com.opaku.id.core.utils.writeFileToInternalStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
@@ -28,4 +33,31 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    fun login(model: UserModel) = flow {
+        try {
+            val jsonString = context.parsingFileToStringFromInternalStorage("user.json")
+            val convertToObject = Gson().fromJson(jsonString, UserResponse::class.java)
+
+            val searchUser = convertToObject.filter { ur ->
+                ur.email == model.email && ur.password == model.password
+            }
+
+            emit(ApiResponse.Success(!searchUser.isNullOrEmpty()))
+        } catch (ex: IOException) {
+            emit(ApiResponse.Error(ex.message.toString()))
+        }
+    }
+
+    fun register(request: UserResponseItem) = flow {
+        try {
+            val jsonString = context.parsingFileToString("user.json")
+            val convertToObject = Gson().fromJson(jsonString, UserResponse::class.java)
+            convertToObject.add(request)
+
+            context.writeFileToInternalStorage(Gson().toJson(convertToObject), "user.json")
+            emit(ApiResponse.Success(true))
+        } catch (ex: IOException) {
+            emit(ApiResponse.Error(ex.message.toString()))
+        }
+    }
 }

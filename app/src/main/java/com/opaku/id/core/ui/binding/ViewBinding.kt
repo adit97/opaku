@@ -11,9 +11,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.opaku.id.R
+import com.opaku.id.core.domain.model.CartModel
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
 import com.opaku.id.core.utils.setImageDrawableFromServer
 import com.opaku.id.core.utils.toDp
+import com.opaku.id.ui.dashboard.fragment.cart.CartRecyclerViewAdapter
 import java.text.DecimalFormat
 
 @BindingAdapter(value = ["populateItems"])
@@ -22,6 +24,15 @@ fun RecyclerView.populateItems(
 ) {
     if (items != null) {
         (this.adapter as GeneralRecyclerViewAdapter<Any>).populateItems(items)
+    }
+}
+
+@BindingAdapter(value = ["populateCartItems"])
+fun RecyclerView.populateCartItems(
+    items: List<CartModel>?
+) {
+    if (items != null) {
+        (this.adapter as CartRecyclerViewAdapter).populateItems(items)
     }
 }
 

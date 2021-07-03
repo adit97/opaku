@@ -5,10 +5,15 @@ import com.opaku.id.core.data.source.local.entity.FavoriteProductEntity
 import com.opaku.id.core.data.source.remote.RemoteDataSource
 import com.opaku.id.core.data.source.remote.network.ApiResponse
 import com.opaku.id.core.data.source.remote.response.ProductsResponse
+import com.opaku.id.core.domain.model.CartModel
 import com.opaku.id.core.domain.model.ProductModel
+import com.opaku.id.core.domain.model.RegisterModel
+import com.opaku.id.core.domain.model.UserModel
 import com.opaku.id.core.domain.repository.IAppRepository
 import com.opaku.id.core.utils.AppExecutors
 import com.opaku.id.core.utils.mapper.EntityToModel
+import com.opaku.id.core.utils.mapper.ModelToEntity
+import com.opaku.id.core.utils.mapper.ModelToRequest
 import com.opaku.id.core.utils.mapper.ResponseToModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -49,5 +54,39 @@ class AppRepository @Inject constructor(
 
     override fun isFavoriteProduct(productId: String): Flow<String> =
         localDataSource.isFavoriteProduct(productId)
+
+    override suspend fun addChart(model: CartModel) {
+        localDataSource.addChart(ModelToEntity.toCartEntity(model))
+    }
+
+    override fun carts(): Flow<List<CartModel>> = localDataSource.carts().map {
+        EntityToModel.toCartModel(it)
+    }
+
+    override fun deleteCart(productId: String) {
+        appExecutors.diskIO().execute {
+            localDataSource.deleteCart(productId)
+        }
+    }
+
+    override fun login(model: UserModel): Flow<Resource<Boolean>> =
+        object : NetworkBoundResource<Boolean, Boolean>() {
+            override fun returnResult(data: Boolean): Flow<Boolean> = flow {
+                emit(data)
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<Boolean>> =
+                remoteDataSource.login(model)
+        }.asFlow()
+
+    override fun register(model: RegisterModel): Flow<Resource<Boolean>> =
+        object : NetworkBoundResource<Boolean, Boolean>() {
+            override fun returnResult(data: Boolean): Flow<Boolean> = flow {
+                emit(data)
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<Boolean>> =
+                remoteDataSource.register(ModelToRequest.toRegisterRequest(model))
+        }.asFlow()
 
 }

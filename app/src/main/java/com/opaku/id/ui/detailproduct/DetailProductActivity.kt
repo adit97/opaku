@@ -35,8 +35,6 @@ class DetailProductActivity : AppCompatActivity() {
 
     private val relatedProductAnalytic = mutableListOf<Bundle>()
 
-    private var isFavorite = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailProductBinding.inflate(layoutInflater)
@@ -54,19 +52,45 @@ class DetailProductActivity : AppCompatActivity() {
     }
 
     private fun setupOnClickEvent() {
-        binding.ivFavorite.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                viewModel.setFavorite()
+        binding.apply {
+            ivFavorite.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    viewModel.setFavorite()
+                }
+
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
+                    putString(
+                        FirebaseAnalytics.Param.ITEM_ID,
+                        "SKU_123 ${System.currentTimeMillis()}"
+                    )
+                    putString(FirebaseAnalytics.Param.ITEM_NAME, "jeggings")
+                    putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "pants")
+                    putString(FirebaseAnalytics.Param.ITEM_VARIANT, "black")
+                    putString(FirebaseAnalytics.Param.ITEM_BRAND, "Google")
+                    putDouble(FirebaseAnalytics.Param.PRICE, 9.99)
+                })
             }
 
-            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
-                putString(FirebaseAnalytics.Param.ITEM_ID, "SKU_123 ${System.currentTimeMillis()}")
-                putString(FirebaseAnalytics.Param.ITEM_NAME, "jeggings")
-                putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "pants")
-                putString(FirebaseAnalytics.Param.ITEM_VARIANT, "black")
-                putString(FirebaseAnalytics.Param.ITEM_BRAND, "Google")
-                putDouble(FirebaseAnalytics.Param.PRICE, 9.99)
-            })
+            btnAddToCart.setOnClickListener {
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, Bundle().apply {
+                    putString(
+                        FirebaseAnalytics.Param.ITEM_ID,
+                        "SKU_123 ${System.currentTimeMillis()}"
+                    )
+                    putLong(FirebaseAnalytics.Param.QUANTITY, 2)
+                    putString(FirebaseAnalytics.Param.CURRENCY, "USD")
+                    putDouble(FirebaseAnalytics.Param.VALUE, 2 * 9.99)
+                    putString(FirebaseAnalytics.Param.ITEM_NAME, "jeggings")
+                    putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "pants")
+                    putString(FirebaseAnalytics.Param.ITEM_VARIANT, "black")
+                    putString(FirebaseAnalytics.Param.ITEM_BRAND, "Google")
+                    putDouble(FirebaseAnalytics.Param.PRICE, 9.99)
+                })
+
+                lifecycleScope.launch(Dispatchers.Main) {
+                    viewModel.addCart()
+                }
+            }
         }
     }
 

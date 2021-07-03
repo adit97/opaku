@@ -41,4 +41,15 @@
         <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/yellow</item>
     </style>
+
+    <style name="MyButton" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearanceOverlay">@style/MyShapeAppearance</item>
+    </style>
+    <style name="MyShapeAppearance">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">5dp</item>
+        <item name="cornerSizeBottomRight">5dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
 </resources>

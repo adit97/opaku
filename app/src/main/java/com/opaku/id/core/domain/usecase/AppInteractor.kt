@@ -1,7 +1,10 @@
 package com.opaku.id.core.domain.usecase
 
 import com.opaku.id.core.data.Resource
+import com.opaku.id.core.domain.model.CartModel
 import com.opaku.id.core.domain.model.ProductModel
+import com.opaku.id.core.domain.model.RegisterModel
+import com.opaku.id.core.domain.model.UserModel
 import com.opaku.id.core.domain.repository.IAppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -21,4 +24,19 @@ class AppInteractor @Inject constructor(private val appRepository: IAppRepositor
 
     override fun isFavoriteProduct(productId: String): Flow<String> =
         appRepository.isFavoriteProduct(productId)
+
+    override suspend fun addChart(model: CartModel) =
+        appRepository.addChart(model)
+
+    override fun carts(): Flow<List<CartModel>> =
+        appRepository.carts()
+
+    override fun deleteCart(productId: String) =
+        appRepository.deleteCart(productId)
+
+    override fun login(model: UserModel): Flow<Resource<Boolean>> =
+        appRepository.login(model)
+
+    override fun register(model: RegisterModel): Flow<Resource<Boolean>> =
+        appRepository.register(model)
 }

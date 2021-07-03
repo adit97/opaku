@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
+import com.opaku.id.core.domain.model.CartModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.domain.usecase.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,5 +54,13 @@ class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : V
 
     val isFavorite = product.switchMap {
         appUseCase.isFavoriteProduct(it.id).asLiveData()
+    }
+
+    suspend fun addCart() {
+        product.value?.let {
+            CartModel(it.id, 0)
+        }?.let {
+            appUseCase.addChart(it)
+        }
     }
 }

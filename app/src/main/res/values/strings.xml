@@ -13,6 +13,22 @@
     <string name="item_product_discount">%1$d\%% Off</string>
     <string name="item_product_selling_price">$ %d</string>
     <string name="item_product_original_price">$ %s</string>
+    <string name="login_welcome_to_opaku">Welcome to Opaku</string>
+    <string name="login_sign_in_to_continue">Sign in to continue</string>
+    <string name="general_your_email">Your Email</string>
+    <string name="general_password">Password</string>
+    <string name="general_sign_in">Sign In</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_don_t_have_a_account">Don’t have a account?</string>
+    <string name="general_register">Register</string>
+    <string name="register_let_s_get_started">Let’s Get Started</string>
+    <string name="register_create_an_new_account">Create an new account</string>
+    <string name="general_full_name">Full Name</string>
+    <string name="general_password_again">Password Again</string>
+    <string name="register_sign_up">Sign Up</string>
+    <string name="register_have_a_account">have a account?</string>
+    <string name="general_check_your_data">Check your data</string>
+    <string name="login_error_message">Check your email or password</string>
 
 
 </resources>
