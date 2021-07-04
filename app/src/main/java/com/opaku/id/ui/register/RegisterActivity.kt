@@ -28,6 +28,8 @@ class RegisterActivity : AppCompatActivity() {
     private val viewModel: RegisterViewModel by viewModels()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
+    private var userId = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -44,7 +46,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        viewModel.userModel.value?.id = System.currentTimeMillis()
+        userId = System.currentTimeMillis()
+        viewModel.userModel.value?.id = userId
     }
 
     private fun setupAnalytic() {
@@ -70,6 +73,7 @@ class RegisterActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             if (it.data == true) {
                                 sessionManager.isLogin = true
+                                sessionManager.userId = userId
                                 firebaseAnalytics.setUserProperty(
                                     AnalyticCustomParam.SuccessfulRegistration,
                                     viewModel.userModel.value?.email

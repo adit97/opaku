@@ -64,11 +64,11 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    if (it.data == true) {
+                    if (it.data == 0L) {
+                        toast(getString(R.string.login_error_message))
+                    } else {
                         sessionManager.isLogin = true
                         startActivity(Intent(this, DashboardActivity::class.java))
-                    } else {
-                        toast(getString(R.string.login_error_message))
                     }
                 }
                 is Resource.Error -> {

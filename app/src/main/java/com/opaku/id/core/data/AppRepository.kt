@@ -5,10 +5,8 @@ import com.opaku.id.core.data.source.local.entity.FavoriteProductEntity
 import com.opaku.id.core.data.source.remote.RemoteDataSource
 import com.opaku.id.core.data.source.remote.network.ApiResponse
 import com.opaku.id.core.data.source.remote.response.ProductsResponse
-import com.opaku.id.core.domain.model.CartModel
-import com.opaku.id.core.domain.model.ProductModel
-import com.opaku.id.core.domain.model.RegisterModel
-import com.opaku.id.core.domain.model.UserModel
+import com.opaku.id.core.data.source.remote.response.ProductsResponseItem
+import com.opaku.id.core.domain.model.*
 import com.opaku.id.core.domain.repository.IAppRepository
 import com.opaku.id.core.utils.AppExecutors
 import com.opaku.id.core.utils.mapper.EntityToModel
@@ -69,13 +67,13 @@ class AppRepository @Inject constructor(
         }
     }
 
-    override fun login(model: UserModel): Flow<Resource<Boolean>> =
-        object : NetworkBoundResource<Boolean, Boolean>() {
-            override fun returnResult(data: Boolean): Flow<Boolean> = flow {
+    override fun login(model: UserModel): Flow<Resource<Long>> =
+        object : NetworkBoundResource<Long, Long>() {
+            override fun returnResult(data: Long): Flow<Long> = flow {
                 emit(data)
             }
 
-            override suspend fun createCall(): Flow<ApiResponse<Boolean>> =
+            override suspend fun createCall(): Flow<ApiResponse<Long>> =
                 remoteDataSource.login(model)
         }.asFlow()
 
@@ -89,4 +87,14 @@ class AppRepository @Inject constructor(
                 remoteDataSource.register(ModelToRequest.toRegisterRequest(model))
         }.asFlow()
 
+    override fun filterProduct(model: FilterModel): Flow<Resource<List<ProductModel>>> =
+        object : NetworkBoundResource<List<ProductModel>, List<ProductsResponseItem>>() {
+            override fun returnResult(data: List<ProductsResponseItem>): Flow<List<ProductModel>> =
+                flow {
+                    emit(ResponseToModel.toProductsModelList(data))
+                }
+
+            override suspend fun createCall(): Flow<ApiResponse<List<ProductsResponseItem>>> =
+                remoteDataSource.filterProduct(model)
+        }.asFlow()
 }

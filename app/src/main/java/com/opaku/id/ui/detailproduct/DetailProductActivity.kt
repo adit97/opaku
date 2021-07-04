@@ -11,6 +11,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.opaku.id.R
 import com.opaku.id.core.data.Resource
+import com.opaku.id.core.data.source.local.session.ISessionManager
 import com.opaku.id.core.domain.model.ProductColorModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.domain.model.ProductVariantModel
@@ -23,9 +24,13 @@ import com.opaku.id.ui.detailproduct.fragment.PreviewFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailProductActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var sessionManager: ISessionManager
 
     private lateinit var binding: ActivityDetailProductBinding
 

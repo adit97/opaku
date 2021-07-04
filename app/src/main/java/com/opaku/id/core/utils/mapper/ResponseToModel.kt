@@ -1,12 +1,39 @@
 package com.opaku.id.core.utils.mapper
 
 import com.opaku.id.core.data.source.remote.response.ProductsResponse
+import com.opaku.id.core.data.source.remote.response.ProductsResponseItem
 import com.opaku.id.core.data.source.remote.response.Review
 import com.opaku.id.core.data.source.remote.response.VariantPrice
 import com.opaku.id.core.domain.model.*
 
 object ResponseToModel {
     fun toProductsModelList(response: ProductsResponse): List<ProductModel> {
+        val listModel = mutableListOf<ProductModel>()
+        response.forEach {
+            it.apply {
+                listModel.add(
+                    ProductModel(
+                        id = id,
+                        name = name,
+                        rate = rate.toFloat(),
+                        category = category,
+                        weight = weight,
+                        preview = preview,
+                        brand = brand,
+                        desc = desc,
+                        variantPriceModel = toVariantPriceModelList(variantPrice),
+                        variant = toVariantModelList(variant),
+                        color = toColorModelList(color),
+                        reviewModel = toReviewModelList(reviews)
+                    )
+                )
+            }
+        }
+
+        return listModel
+    }
+
+    fun toProductsModelList(response: List<ProductsResponseItem>): List<ProductModel> {
         val listModel = mutableListOf<ProductModel>()
         response.forEach {
             it.apply {

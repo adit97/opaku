@@ -7,20 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.opaku.id.R
 import com.opaku.id.core.data.Resource
 import com.opaku.id.core.domain.model.BannerModel
 import com.opaku.id.core.domain.model.CategoryModel
+import com.opaku.id.core.domain.model.FilterModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
 import com.opaku.id.core.ui.recyclerview.GridSpacingItemDecoration
 import com.opaku.id.core.ui.recyclerview.HorizontalSpacingItemDecoration
 import com.opaku.id.core.ui.viewpager.GeneralViewPagerAdapter
+import com.opaku.id.core.utils.AnalyticCustomParam
+import com.opaku.id.core.utils.Constant.FILTER
 import com.opaku.id.core.utils.Constant.PRODUCT
 import com.opaku.id.databinding.FragmentHomeBinding
 import com.opaku.id.ui.dashboard.fragment.home.fragment.BannerFragment
 import com.opaku.id.ui.detailproduct.DetailProductActivity
 import com.opaku.id.ui.favoriteproduct.FavoriteProductActivity
+import com.opaku.id.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +37,8 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +58,11 @@ class HomeFragment : Fragment() {
         setupBinding()
         setupViewModel()
         setupOnClickEvent()
+        setupAnalytic()
+    }
+
+    private fun setupAnalytic() {
+        firebaseAnalytics = Firebase.analytics
     }
 
     private fun setupOnClickEvent() {
@@ -69,7 +83,19 @@ class HomeFragment : Fragment() {
                 adapter = GeneralRecyclerViewAdapter<CategoryModel>(
                     layoutId = R.layout.item_home_category,
                     onClickListener = { model, position ->
+                        val getCategory = resources.getStringArray(R.array.category).toList()
 
+                        firebaseAnalytics.setUserProperty(
+                            AnalyticCustomParam.SelectCategory,
+                            getCategory[model.categoryId]
+                        )
+
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                SearchActivity::class.java
+                            ).putExtra(FILTER, FilterModel(categoryId = model.categoryId))
+                        )
                     },
                     onLongClickListener = { position ->
 
@@ -157,26 +183,32 @@ class HomeFragment : Fragment() {
     private fun getCategory(): List<CategoryModel> {
         return listOf(
             CategoryModel(
+                8,
                 R.drawable.ic_tshirt,
                 "Man Shirt"
             ),
             CategoryModel(
+                9,
                 R.drawable.ic_dress,
                 "Dress"
             ),
             CategoryModel(
+                10,
                 R.drawable.ic_man_bag,
                 "Man Work Equipment"
             ),
             CategoryModel(
+                11,
                 R.drawable.ic_woman_bag,
                 "Woman Bag"
             ),
             CategoryModel(
+                12,
                 R.drawable.ic_man_shoes,
                 "Man Shoes"
             ),
             CategoryModel(
+                13,
                 R.drawable.ic_woman_shoes,
                 "Height Heels"
             )

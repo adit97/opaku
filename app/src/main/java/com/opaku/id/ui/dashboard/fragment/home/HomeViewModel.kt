@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val appUseCase: AppUseCase): ViewModel() {
+class HomeViewModel @Inject constructor(appUseCase: AppUseCase): ViewModel() {
     val categoryList = MutableLiveData<List<CategoryModel>>()
     val flashSaleProductList = MutableLiveData<List<ProductModel>>()
     val recommendedProductList = MutableLiveData<List<ProductModel>>()

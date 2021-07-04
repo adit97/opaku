@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(private val appUseCase: AppUseCase) : V
         userModel.value = UserModel()
     }
 
-    fun login(): LiveData<Resource<Boolean>> {
+    fun login(): LiveData<Resource<Long>> {
         return appUseCase.login(userModel.value!!).asLiveData()
     }
 }
