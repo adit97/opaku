@@ -8,5 +8,6 @@ data class ProductReviewModel(
     val user: String,
     val rate: Float,
     val review: String,
+    val date: String,
     val images: List<String>
 ) : Parcelable

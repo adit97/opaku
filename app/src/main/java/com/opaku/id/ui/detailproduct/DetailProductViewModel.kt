@@ -1,9 +1,8 @@
 package com.opaku.id.ui.detailproduct
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
+import com.opaku.id.core.data.Resource
+import com.opaku.id.core.domain.model.CartItemModel
 import com.opaku.id.core.domain.model.CartModel
 import com.opaku.id.core.domain.model.ProductModel
 import com.opaku.id.core.domain.usecase.AppUseCase
@@ -14,6 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : ViewModel() {
     val product = MutableLiveData<ProductModel>()
+    val cartItemModel = MutableLiveData<CartItemModel>()
     val productRecommendedList = MutableLiveData<List<ProductModel>>()
 
     val getRelatedProducts = appUseCase.getProducts().asLiveData()
@@ -27,6 +27,7 @@ class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : V
             }
 
             tempData.variant[position].isSelected = true
+            cartItemModel.value!!.variant = tempData.variant[position].size.toString()
             product.value = tempData!!
         }
     }
@@ -40,6 +41,7 @@ class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : V
             }
 
             tempData.color[position].isSelected = true
+            cartItemModel.value!!.color = tempData.color[position].color.toString()
             product.value = tempData!!
         }
     }
@@ -56,11 +58,14 @@ class DetailProductViewModel @Inject constructor(val appUseCase: AppUseCase) : V
         appUseCase.isFavoriteProduct(it.id).asLiveData()
     }
 
-    suspend fun addCart() {
-        product.value?.let {
-            CartModel(it.id, 0)
-        }?.let {
-            appUseCase.addChart(it)
-        }
+    fun addCart(userId: Long): LiveData<Resource<Boolean>> {
+        return appUseCase.addCart(
+            CartModel(
+                user = userId,
+                listOf(
+                    cartItemModel.value!!
+                )
+            )
+        ).asLiveData()
     }
 }

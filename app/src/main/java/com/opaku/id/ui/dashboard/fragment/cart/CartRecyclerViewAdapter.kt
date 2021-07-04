@@ -7,25 +7,25 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.opaku.id.BR
 import com.opaku.id.R
-import com.opaku.id.core.domain.model.CartModel
+import com.opaku.id.core.domain.model.CartItemModel
 import com.opaku.id.databinding.ItemCartBinding
 
 class CartRecyclerViewAdapter(
-    private val onClickListener: (CartModel, Int) -> Unit,
-    private val onAdd: (CartModel) -> Unit,
-    private val onSubtract: (CartModel) -> Unit,
-    private val onDelete: (CartModel) -> Unit
+    private val onClickListener: (CartItemModel, Int) -> Unit,
+    private val onAdd: (CartItemModel) -> Unit,
+    private val onSubtract: (CartItemModel) -> Unit,
+    private val onDelete: (CartItemModel) -> Unit
 ) : RecyclerView.Adapter<CartRecyclerViewAdapter.Holder>() {
 
-    private val items = mutableListOf<CartModel>()
+    private val items = mutableListOf<CartItemModel>()
 
     class Holder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            model: CartModel,
-            onAdd: (CartModel) -> Unit,
-            onSubtract: (CartModel) -> Unit,
-            onDelete: (CartModel) -> Unit
+            model: CartItemModel,
+            onAdd: (CartItemModel) -> Unit,
+            onSubtract: (CartItemModel) -> Unit,
+            onDelete: (CartItemModel) -> Unit
         ) = binding.apply {
             setVariable(BR.itemModel, model)
             executePendingBindings()
@@ -46,7 +46,7 @@ class CartRecyclerViewAdapter(
         }
     }
 
-    fun populateItems(listItem: List<CartModel>) {
+    fun populateItems(listItem: List<CartItemModel>) {
         items.clear()
         items.addAll(listItem)
         notifyDataSetChanged()

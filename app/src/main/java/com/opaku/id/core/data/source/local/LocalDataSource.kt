@@ -1,6 +1,5 @@
 package com.opaku.id.core.data.source.local
 
-import com.opaku.id.core.data.source.local.entity.CartProductEntity
 import com.opaku.id.core.data.source.local.entity.FavoriteProductEntity
 import com.opaku.id.core.data.source.local.room.AppDao
 import javax.inject.Inject
@@ -18,9 +17,4 @@ class LocalDataSource @Inject constructor(private val appDao: AppDao) {
 
     fun isFavoriteProduct(productId: String) = appDao.isFavoriteProduct(productId)
 
-    suspend fun addChart(entity: CartProductEntity) = appDao.addChart(entity)
-
-    fun carts() = appDao.carts()
-
-    fun deleteCart(productId: String) = appDao.deleteCart(productId)
 }

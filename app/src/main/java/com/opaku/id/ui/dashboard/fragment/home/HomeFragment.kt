@@ -184,33 +184,33 @@ class HomeFragment : Fragment() {
         return listOf(
             CategoryModel(
                 8,
-                R.drawable.ic_tshirt,
-                "Man Shirt"
+                R.drawable.ic_baby_boy_clothes_with_anchor,
+                "Boy Cloth"
             ),
             CategoryModel(
                 9,
-                R.drawable.ic_dress,
-                "Dress"
-            ),
-            CategoryModel(
-                10,
-                R.drawable.ic_man_bag,
-                "Man Work Equipment"
+                R.drawable.ic_baby_boy_shoes,
+                "Boy Shoes"
             ),
             CategoryModel(
                 11,
-                R.drawable.ic_woman_bag,
-                "Woman Bag"
+                R.drawable.ic_baby_boy_sock,
+                "Boy Sock"
+            ),
+            CategoryModel(
+                5,
+                R.drawable.ic_toy_horse,
+                "Toy"
             ),
             CategoryModel(
                 12,
-                R.drawable.ic_man_shoes,
-                "Man Shoes"
+                R.drawable.ic_girl_clothes,
+                "Girl Cloth"
             ),
             CategoryModel(
-                13,
-                R.drawable.ic_woman_shoes,
-                "Height Heels"
+                15,
+                R.drawable.ic_baby_girl_sock,
+                "Girl Sock"
             )
         )
     }

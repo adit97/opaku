@@ -29,6 +29,19 @@
     <string name="register_have_a_account">have a account?</string>
     <string name="general_check_your_data">Check your data</string>
     <string name="login_error_message">Check your email or password</string>
+    <string name="detail_product_toolbar">Detail Product</string>
+    <string name="detail_product_select_size">Select Size</string>
+    <string name="delete_product_select_color">Select Color</string>
+    <string name="detail_product_specification">Specification</string>
+    <string name="detail_product_description">Description</string>
+    <string name="detail_product_review_product">Review Product</string>
+    <string name="general_see_more">See More</string>
+    <string name="general_add_to_cart">Add To Cart</string>
+    <string name="general_you_might_also_like">You Might Also Like</string>
+    <string name="general_cancel">cancel</string>
+    <string name="cart_delete_product_message">Delete product</string>
+    <string name="general_delete">delete</string>
+    <string name="cart_message_successfully_deleted_item">successfully deleted item</string>
 
 
 </resources>

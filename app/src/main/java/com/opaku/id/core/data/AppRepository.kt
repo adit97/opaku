@@ -4,13 +4,13 @@ import com.opaku.id.core.data.source.local.LocalDataSource
 import com.opaku.id.core.data.source.local.entity.FavoriteProductEntity
 import com.opaku.id.core.data.source.remote.RemoteDataSource
 import com.opaku.id.core.data.source.remote.network.ApiResponse
+import com.opaku.id.core.data.source.remote.response.CartResponseItem
 import com.opaku.id.core.data.source.remote.response.ProductsResponse
 import com.opaku.id.core.data.source.remote.response.ProductsResponseItem
 import com.opaku.id.core.domain.model.*
 import com.opaku.id.core.domain.repository.IAppRepository
 import com.opaku.id.core.utils.AppExecutors
 import com.opaku.id.core.utils.mapper.EntityToModel
-import com.opaku.id.core.utils.mapper.ModelToEntity
 import com.opaku.id.core.utils.mapper.ModelToRequest
 import com.opaku.id.core.utils.mapper.ResponseToModel
 import kotlinx.coroutines.flow.Flow
@@ -53,20 +53,6 @@ class AppRepository @Inject constructor(
     override fun isFavoriteProduct(productId: String): Flow<String> =
         localDataSource.isFavoriteProduct(productId)
 
-    override suspend fun addChart(model: CartModel) {
-        localDataSource.addChart(ModelToEntity.toCartEntity(model))
-    }
-
-    override fun carts(): Flow<List<CartModel>> = localDataSource.carts().map {
-        EntityToModel.toCartModel(it)
-    }
-
-    override fun deleteCart(productId: String) {
-        appExecutors.diskIO().execute {
-            localDataSource.deleteCart(productId)
-        }
-    }
-
     override fun login(model: UserModel): Flow<Resource<Long>> =
         object : NetworkBoundResource<Long, Long>() {
             override fun returnResult(data: Long): Flow<Long> = flow {
@@ -96,5 +82,37 @@ class AppRepository @Inject constructor(
 
             override suspend fun createCall(): Flow<ApiResponse<List<ProductsResponseItem>>> =
                 remoteDataSource.filterProduct(model)
+        }.asFlow()
+
+    override fun addCart(model: CartModel): Flow<Resource<Boolean>> =
+        object : NetworkBoundResource<Boolean, Boolean>() {
+            override fun returnResult(data: Boolean): Flow<Boolean> = flow {
+                emit(data)
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<Boolean>> =
+                remoteDataSource.addCart(ModelToRequest.toCartRequest(model))
+        }.asFlow()
+
+    override fun removeCart(model: CartModel): Flow<Resource<Boolean>> =
+        object : NetworkBoundResource<Boolean, Boolean>() {
+            override fun returnResult(data: Boolean): Flow<Boolean> = flow {
+                emit(data)
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<Boolean>> =
+                remoteDataSource.removeCart(ModelToRequest.toCartRequest(model))
+        }.asFlow()
+
+    override fun carts(userId: Long): Flow<Resource<CartModel>> =
+        object : NetworkBoundResource<CartModel, CartResponseItem?>() {
+            override fun returnResult(data: CartResponseItem?): Flow<CartModel> = flow {
+                if (data != null) {
+                    emit(ResponseToModel.toCartModel(data))
+                }
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<CartResponseItem?>> =
+                remoteDataSource.carts(userId)
         }.asFlow()
 }

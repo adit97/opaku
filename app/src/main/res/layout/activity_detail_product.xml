@@ -7,10 +7,19 @@
 
         <import type="android.view.View" />
 
+        <import type="com.opaku.id.core.utils.ButtonClickListener" />
+
         <variable
             name="vm"
             type="com.opaku.id.ui.detailproduct.DetailProductViewModel" />
 
+        <variable
+            name="onAddCart"
+            type="ButtonClickListener" />
+
+        <variable
+            name="onAddFavorite"
+            type="ButtonClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +43,7 @@
                 app:contentInsetEnd="0dp"
                 app:contentInsetStart="0dp"
                 app:navigationIcon="@drawable/ic_left"
-                app:title="Detail Product"
+                app:title="@string/detail_product_toolbar"
                 app:titleTextColor="@color/dark" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -82,6 +91,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="@{onAddFavorite::onClickListener}"
                     android:src="@{vm.isFavorite() == null ? @drawable/ic_love : @drawable/ic_love_red}"
                     app:layout_constraintEnd_toEndOf="@+id/vp_product_detail"
                     app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />
@@ -121,7 +131,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
                     android:maxLines="2"
-                    android:text="Select Size"
+                    android:text="@string/detail_product_select_size"
                     android:textColor="@color/dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -150,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="2"
-                    android:text="Select Color"
+                    android:text="@string/delete_product_select_color"
                     android:textColor="@color/dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -179,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="2"
-                    android:text="Specification"
+                    android:text="@string/detail_product_specification"
                     android:textColor="@color/dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -192,7 +202,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Description"
+                    android:text="@string/detail_product_description"
                     android:textColor="@color/dark"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/iv_favorite"
@@ -217,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="2"
-                    android:text="Review Product"
+                    android:text="@string/detail_product_review_product"
                     android:textColor="@color/dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -230,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="2"
-                    android:text="See More"
+                    android:text="@string/general_see_more"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -302,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="December 10, 2020"
+                    android:text="@{vm.product.reviewModel.get(0).date}"
                     app:layout_constraintStart_toStartOf="@+id/iv_review_user"
                     app:layout_constraintTop_toBottomOf="@+id/iv_review_image" />
 
@@ -312,7 +322,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="2"
-                    android:text="You Might Also Like"
+                    android:text="@string/general_you_might_also_like"
                     android:textColor="@color/dark"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -343,8 +353,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:onClick="@{onAddCart::onClickListener}"
             android:padding="16dp"
-            android:text="Add To Cart"
+            android:text="@string/general_add_to_cart"
             android:textAllCaps="false"
             android:textSize="14sp"
             android:textStyle="bold"

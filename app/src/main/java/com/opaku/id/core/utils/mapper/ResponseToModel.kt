@@ -1,9 +1,6 @@
 package com.opaku.id.core.utils.mapper
 
-import com.opaku.id.core.data.source.remote.response.ProductsResponse
-import com.opaku.id.core.data.source.remote.response.ProductsResponseItem
-import com.opaku.id.core.data.source.remote.response.Review
-import com.opaku.id.core.data.source.remote.response.VariantPrice
+import com.opaku.id.core.data.source.remote.response.*
 import com.opaku.id.core.domain.model.*
 
 object ResponseToModel {
@@ -113,12 +110,44 @@ object ResponseToModel {
                         user = user,
                         rate = rate.toFloat(),
                         review = review,
+                        date = date,
                         images = images
                     )
                 )
             }
         }
 
+        return listModel
+    }
+
+    fun toCartModel(response: CartResponseItem): CartModel {
+        val model: CartModel
+        response.apply {
+            model = CartModel(
+                    user = user,
+                    cart = toCartItemModelList(cart)
+                )
+        }
+        return model
+    }
+
+    private fun toCartItemModelList(response: List<Cart>): List<CartItemModel> {
+        val listModel = mutableListOf<CartItemModel>()
+        response.forEach {
+            it.apply {
+                listModel.add(
+                    CartItemModel(
+                        id = id,
+                        name = name,
+                        image = image,
+                        variant = variant,
+                        color = color,
+                        price = price,
+                        quantity = quantity
+                    )
+                )
+            }
+        }
         return listModel
     }
 }

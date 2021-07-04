@@ -12,13 +12,13 @@ import com.google.firebase.ktx.Firebase
 import com.opaku.id.R
 import com.opaku.id.core.data.Resource
 import com.opaku.id.core.data.source.local.session.ISessionManager
-import com.opaku.id.core.domain.model.ProductColorModel
-import com.opaku.id.core.domain.model.ProductModel
-import com.opaku.id.core.domain.model.ProductVariantModel
+import com.opaku.id.core.domain.model.*
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
 import com.opaku.id.core.ui.recyclerview.HorizontalSpacingItemDecoration
 import com.opaku.id.core.ui.viewpager.GeneralViewPagerAdapter
+import com.opaku.id.core.utils.ButtonClickListener
 import com.opaku.id.core.utils.Constant.PRODUCT
+import com.opaku.id.core.utils.toast
 import com.opaku.id.databinding.ActivityDetailProductBinding
 import com.opaku.id.ui.detailproduct.fragment.PreviewFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +40,8 @@ class DetailProductActivity : AppCompatActivity() {
 
     private val relatedProductAnalytic = mutableListOf<Bundle>()
 
+    private val bundleProduct = Bundle()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailProductBinding.inflate(layoutInflater)
@@ -48,79 +50,54 @@ class DetailProductActivity : AppCompatActivity() {
         initView()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
     private fun initView() {
         setupToolbar()
         setupViewModel()
         setupBinding()
         setupAnalytic()
-        setupOnClickEvent()
-    }
-
-    private fun setupOnClickEvent() {
-        binding.apply {
-            ivFavorite.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.setFavorite()
-                }
-
-                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
-                    putString(
-                        FirebaseAnalytics.Param.ITEM_ID,
-                        "SKU_123 ${System.currentTimeMillis()}"
-                    )
-                    putString(FirebaseAnalytics.Param.ITEM_NAME, "jeggings")
-                    putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "pants")
-                    putString(FirebaseAnalytics.Param.ITEM_VARIANT, "black")
-                    putString(FirebaseAnalytics.Param.ITEM_BRAND, "Google")
-                    putDouble(FirebaseAnalytics.Param.PRICE, 9.99)
-                })
-            }
-
-            btnAddToCart.setOnClickListener {
-                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, Bundle().apply {
-                    putString(
-                        FirebaseAnalytics.Param.ITEM_ID,
-                        "SKU_123 ${System.currentTimeMillis()}"
-                    )
-                    putLong(FirebaseAnalytics.Param.QUANTITY, 2)
-                    putString(FirebaseAnalytics.Param.CURRENCY, "USD")
-                    putDouble(FirebaseAnalytics.Param.VALUE, 2 * 9.99)
-                    putString(FirebaseAnalytics.Param.ITEM_NAME, "jeggings")
-                    putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "pants")
-                    putString(FirebaseAnalytics.Param.ITEM_VARIANT, "black")
-                    putString(FirebaseAnalytics.Param.ITEM_BRAND, "Google")
-                    putDouble(FirebaseAnalytics.Param.PRICE, 9.99)
-                })
-
-                lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.addCart()
-                }
-            }
-        }
     }
 
     private fun setupAnalytic() {
         val getCategory = resources.getStringArray(R.array.category).toList()
 
         firebaseAnalytics = Firebase.analytics
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, viewModel.product.value?.id)
-            putString(FirebaseAnalytics.Param.ITEM_NAME, viewModel.product.value?.name)
+
+        bundleProduct.apply {
+            putString(
+                FirebaseAnalytics.Param.ITEM_ID,
+                viewModel.product.value?.id
+            )
+            putString(
+                FirebaseAnalytics.Param.ITEM_NAME,
+                viewModel.product.value?.name
+            )
             putString(
                 FirebaseAnalytics.Param.ITEM_CATEGORY,
                 getCategory[viewModel.product.value?.category!!]
             )
             putString(
-                FirebaseAnalytics.Param.ITEM_VARIANT,
-                viewModel.product.value!!.variantPriceModel[0].size.toString()
+                FirebaseAnalytics.Param.ITEM_BRAND,
+                viewModel.product.value!!.brand
             )
-            putString(FirebaseAnalytics.Param.ITEM_BRAND, viewModel.product.value!!.brand)
-            putDouble(
-                FirebaseAnalytics.Param.PRICE,
-                viewModel.product.value!!.variantPriceModel[0].price
-            )
-        })
+        }
 
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, Bundle().apply {
+            bundleProduct.apply {
+                putString(
+                    FirebaseAnalytics.Param.ITEM_VARIANT,
+                    viewModel.product.value!!.variantPriceModel[0].size.toString()
+                )
+                putDouble(
+                    FirebaseAnalytics.Param.PRICE,
+                    viewModel.product.value!!.variantPriceModel[0].price
+                )
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -128,14 +105,21 @@ class DetailProductActivity : AppCompatActivity() {
         supportActionBar
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return super.onSupportNavigateUp()
-    }
-
     private fun setupViewModel() {
         viewModel.apply {
-            product.value = intent.getParcelableExtra(PRODUCT)
+            val data = intent.getParcelableExtra<ProductModel>(PRODUCT)
+            product.value = data
+            data?.let {
+                cartItemModel.value = CartItemModel(
+                    it.id,
+                    it.name,
+                    it.preview[0],
+                    it.variantPriceModel[0].size.size ?: "",
+                    it.variantPriceModel[0].color.color ?: "",
+                    it.variantPriceModel[0].price,
+                    1
+                )
+            }
 
             viewModel.getRelatedProducts.observe(this@DetailProductActivity, {
                 when (it) {
@@ -149,11 +133,6 @@ class DetailProductActivity : AppCompatActivity() {
                     }
                 }
             })
-
-//            isFavorite.observe(this@DetailProductActivity, {
-//                println("isFavorite : $it")
-//                this@DetailProductActivity.isFavorite = it == null
-//            })
         }
     }
 
@@ -211,6 +190,9 @@ class DetailProductActivity : AppCompatActivity() {
         binding.apply {
             lifecycleOwner = this@DetailProductActivity
             vm = viewModel
+
+            onAddCart = onAddCart()
+            onAddFavorite = onAddFavorite()
 
             vpProductDetail.adapter =
                 viewModel.product.value?.let { getProductDetailVpAdapter(it.preview) }
@@ -283,4 +265,64 @@ class DetailProductActivity : AppCompatActivity() {
         )
     }
 
+    private fun onAddCart() = ButtonClickListener {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, Bundle().apply {
+            bundleProduct.apply {
+                putLong(
+                    FirebaseAnalytics.Param.QUANTITY,
+                    1
+                )
+                putString(
+                    FirebaseAnalytics.Param.CURRENCY,
+                    "USD"
+                )
+                putDouble(
+                    FirebaseAnalytics.Param.VALUE,
+                    2 * 9.99
+                )
+                putString(
+                    FirebaseAnalytics.Param.ITEM_VARIANT,
+                    viewModel.product.value!!.variantPriceModel[0].size.toString()
+                )
+                putDouble(
+                    FirebaseAnalytics.Param.PRICE,
+                    viewModel.product.value!!.variantPriceModel[0].price
+                )
+            }
+        })
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            println("sessionManager.userId : ${sessionManager.userId}")
+            viewModel.addCart(sessionManager.userId).observe(this@DetailProductActivity, {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        toast("Successfully added to cart ")
+                    }
+                    is Resource.Error -> {
+                    }
+                }
+            })
+        }
+    }
+
+    private fun onAddFavorite() = ButtonClickListener {
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.setFavorite()
+        }
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
+            bundleProduct.apply {
+                putString(
+                    FirebaseAnalytics.Param.ITEM_VARIANT,
+                    viewModel.product.value!!.variantPriceModel[0].size.toString()
+                )
+                putDouble(
+                    FirebaseAnalytics.Param.PRICE,
+                    viewModel.product.value!!.variantPriceModel[0].price
+                )
+            }
+        })
+    }
 }

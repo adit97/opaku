@@ -10,10 +10,10 @@ interface IAppRepository {
     fun favoriteProducts(): Flow<List<String>>
     fun deleteFavoriteProduct(productId: String)
     fun isFavoriteProduct(productId: String): Flow<String>
-    suspend fun addChart(model: CartModel)
-    fun carts(): Flow<List<CartModel>>
-    fun deleteCart(productId: String)
+    fun carts(userId: Long): Flow<Resource<CartModel>>
     fun login(model: UserModel): Flow<Resource<Long>>
     fun register(model: RegisterModel): Flow<Resource<Boolean>>
     fun filterProduct(model: FilterModel): Flow<Resource<List<ProductModel>>>
+    fun addCart(model: CartModel): Flow<Resource<Boolean>>
+    fun removeCart(model: CartModel): Flow<Resource<Boolean>>
 }

@@ -22,15 +22,6 @@ class AppInteractor @Inject constructor(private val appRepository: IAppRepositor
     override fun isFavoriteProduct(productId: String): Flow<String> =
         appRepository.isFavoriteProduct(productId)
 
-    override suspend fun addChart(model: CartModel) =
-        appRepository.addChart(model)
-
-    override fun carts(): Flow<List<CartModel>> =
-        appRepository.carts()
-
-    override fun deleteCart(productId: String) =
-        appRepository.deleteCart(productId)
-
     override fun login(model: UserModel): Flow<Resource<Long>> =
         appRepository.login(model)
 
@@ -39,4 +30,13 @@ class AppInteractor @Inject constructor(private val appRepository: IAppRepositor
 
     override fun filterProduct(model: FilterModel): Flow<Resource<List<ProductModel>>> =
         appRepository.filterProduct(model)
+
+    override fun addCart(model: CartModel): Flow<Resource<Boolean>> =
+        appRepository.addCart(model)
+
+    override fun carts(userId: Long): Flow<Resource<CartModel>> =
+        appRepository.carts(userId)
+
+    override fun removeCart(model: CartModel): Flow<Resource<Boolean>> =
+        appRepository.removeCart(model)
 }

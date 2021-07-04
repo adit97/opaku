@@ -48,6 +48,7 @@
       {
         "user": "Wayde",
         "rate": 5,
+        "date": "December 10, 2020",
         "review": "I love this product! Normally I do like to just relax in the tub with a glass of wine",
         "images": [
           "1.jpg",
@@ -85,6 +86,7 @@
       {
         "user": "Courtney Gerlach",
         "rate": 5,
+        "date": "December 10, 2020",
         "review": "It actually floats with out water getting into it. My sons new favorite bath toy!",
         "images": [
           "4.jpg",
@@ -166,6 +168,7 @@
       {
         "user": "Elessar",
         "rate": 5,
+        "date": "December 10, 2020",
         "review": "Here they are in all their glory. These are very good quality, thicker material but not to thick!",
         "images": [
           "6.jpg"
@@ -220,6 +223,7 @@
       {
         "user": "Elessar",
         "rate": 5,
+        "date": "December 10, 2020",
         "review": "I like these drawstring shorts for my toddler. They're very soft and comfortable.",
         "images": [
           "7.jpg"

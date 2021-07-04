@@ -11,7 +11,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.opaku.id.R
-import com.opaku.id.core.domain.model.CartModel
+import com.opaku.id.core.domain.model.CartItemModel
 import com.opaku.id.core.ui.recyclerview.GeneralRecyclerViewAdapter
 import com.opaku.id.core.utils.setImageDrawableFromServer
 import com.opaku.id.core.utils.toDp
@@ -29,7 +29,7 @@ fun RecyclerView.populateItems(
 
 @BindingAdapter(value = ["populateCartItems"])
 fun RecyclerView.populateCartItems(
-    items: List<CartModel>?
+    items: List<CartItemModel>?
 ) {
     if (items != null) {
         (this.adapter as CartRecyclerViewAdapter).populateItems(items)
@@ -59,6 +59,36 @@ fun AppCompatTextView.setTextCurrencyFormat(
             this.paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         }
     }
+}
+
+@BindingAdapter("priceItemCart", "quantityItemCart")
+fun AppCompatTextView.setTextCartCurrencyFormat(
+    priceItemCart: Double?,
+    quantityItemCart: Int?
+) {
+    if (priceItemCart != null && quantityItemCart != null) {
+        val finalText = priceItemCart * quantityItemCart.toDouble()
+        val formatter = DecimalFormat("#,###")
+        val formattedNumber = formatter.format(finalText)
+        text = context.getString(R.string.item_product_original_price, formattedNumber)
+    }
+}
+
+@BindingAdapter("variantItemCart", "colorItemCart")
+fun AppCompatTextView.setTextItemVariant(
+    size: String?,
+    color: String?
+) {
+    var finalText = ""
+    if (!size.isNullOrEmpty()) {
+        finalText += if (!color.isNullOrEmpty()) "$size - $color" else size
+    } else {
+        if (!color.isNullOrEmpty()) {
+            finalText += color
+        }
+    }
+
+    text = finalText
 }
 
 @BindingAdapter("setBackgroundResource", "isSelected")

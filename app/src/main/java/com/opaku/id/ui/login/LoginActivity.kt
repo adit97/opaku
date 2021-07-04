@@ -47,6 +47,14 @@ class LoginActivity : AppCompatActivity() {
                 "user.json"
             )
         }
+
+        val mFileCart = File(filesDir, "cart.json")
+        if (!mFileCart.exists()) {
+            writeFileToInternalStorage(
+                "[{}]",
+                "cart.json"
+            )
+        }
     }
 
     private fun setupBinding() {

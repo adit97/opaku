@@ -10,6 +10,8 @@ data class Review(
     val rate: Int,
     @SerializedName("review")
     val review: String,
+    @SerializedName("date")
+    val date: String,
     @SerializedName("images")
     val images: List<String>
 )
