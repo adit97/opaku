@@ -1,5 +1,6 @@
 package com.opaku.id.ui.detailproduct
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.viewModels
@@ -87,16 +88,18 @@ class DetailProductActivity : AppCompatActivity() {
         }
 
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, Bundle().apply {
-            bundleProduct.apply {
-                putString(
-                    FirebaseAnalytics.Param.ITEM_VARIANT,
-                    viewModel.product.value!!.variantPriceModel[0].size.toString()
-                )
-                putDouble(
-                    FirebaseAnalytics.Param.PRICE,
-                    viewModel.product.value!!.variantPriceModel[0].price
-                )
-            }
+            putString(
+                FirebaseAnalytics.Param.ITEM_VARIANT,
+                viewModel.product.value!!.variantPriceModel[0].size.toString()
+            )
+            putDouble(
+                FirebaseAnalytics.Param.PRICE,
+                viewModel.product.value!!.variantPriceModel[0].price
+            )
+            putParcelableArray(
+                FirebaseAnalytics.Param.ITEMS,
+                listOf(bundleProduct).toTypedArray()
+            )
         })
     }
 
@@ -244,6 +247,15 @@ class DetailProductActivity : AppCompatActivity() {
                                     listOf<Parcelable>(relatedProductAnalytic[position]).toTypedArray()
                                 )
                             })
+
+                        startActivity(
+                            Intent(
+                                this@DetailProductActivity,
+                                DetailProductActivity::class.java
+                            ).putExtra(
+                                PRODUCT, model
+                            )
+                        )
                     },
                     onLongClickListener = { position ->
 
@@ -267,28 +279,30 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun onAddCart() = ButtonClickListener {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART, Bundle().apply {
-            bundleProduct.apply {
-                putLong(
-                    FirebaseAnalytics.Param.QUANTITY,
-                    1
-                )
-                putString(
-                    FirebaseAnalytics.Param.CURRENCY,
-                    "USD"
-                )
-                putDouble(
-                    FirebaseAnalytics.Param.VALUE,
-                    2 * 9.99
-                )
-                putString(
-                    FirebaseAnalytics.Param.ITEM_VARIANT,
-                    viewModel.product.value!!.variantPriceModel[0].size.toString()
-                )
-                putDouble(
-                    FirebaseAnalytics.Param.PRICE,
-                    viewModel.product.value!!.variantPriceModel[0].price
-                )
-            }
+            putLong(
+                FirebaseAnalytics.Param.QUANTITY,
+                1
+            )
+            putString(
+                FirebaseAnalytics.Param.CURRENCY,
+                "USD"
+            )
+            putDouble(
+                FirebaseAnalytics.Param.VALUE,
+                2 * 9.99
+            )
+            putString(
+                FirebaseAnalytics.Param.ITEM_VARIANT,
+                viewModel.product.value!!.variantPriceModel[0].size.toString()
+            )
+            putDouble(
+                FirebaseAnalytics.Param.PRICE,
+                viewModel.product.value!!.variantPriceModel[0].price
+            )
+            putParcelableArray(
+                FirebaseAnalytics.Param.ITEMS,
+                listOf(bundleProduct).toTypedArray()
+            )
         })
 
         lifecycleScope.launch(Dispatchers.Main) {
@@ -313,16 +327,18 @@ class DetailProductActivity : AppCompatActivity() {
         }
 
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST, Bundle().apply {
-            bundleProduct.apply {
-                putString(
-                    FirebaseAnalytics.Param.ITEM_VARIANT,
-                    viewModel.product.value!!.variantPriceModel[0].size.toString()
-                )
-                putDouble(
-                    FirebaseAnalytics.Param.PRICE,
-                    viewModel.product.value!!.variantPriceModel[0].price
-                )
-            }
+            putString(
+                FirebaseAnalytics.Param.ITEM_VARIANT,
+                viewModel.product.value!!.variantPriceModel[0].size.toString()
+            )
+            putDouble(
+                FirebaseAnalytics.Param.PRICE,
+                viewModel.product.value!!.variantPriceModel[0].price
+            )
+            putParcelableArray(
+                FirebaseAnalytics.Param.ITEMS,
+                listOf(bundleProduct).toTypedArray()
+            )
         })
     }
 }

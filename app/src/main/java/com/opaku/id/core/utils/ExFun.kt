@@ -2,7 +2,6 @@ package com.opaku.id.core.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import java.io.File
@@ -49,14 +48,14 @@ fun Context.writeFileToInternalStorage(data: String, jsonFile: String) {
 }
 
 fun AppCompatImageView.setImageDrawableFromServer(resource: String) {
-    val drawable = Drawable.createFromResourceStream(
-        resources,
-        TypedValue(),
-        resources.assets.open("img/$resource"),
-        null
-    )
-
-    this.setImageDrawable(drawable)
+    try {
+        val ims = context.assets.open("img/$resource")
+        val d = Drawable.createFromStream(ims, null)
+        setImageDrawable(d)
+        ims.close()
+    } catch (ex: IOException) {
+        return
+    }
 }
 
 fun Context.toDp(number: Int): Int = (number * resources.displayMetrics.density).roundToInt()
