@@ -2,7 +2,7 @@
 ## Measure Ecommerce
 view_item
 Untuk menghitung berapa kali detail produk dilihat, mencatat log view_item setiap kali pengguna melihat layar detail produk.
-<img src="/previews/view_item.gif" />
+<img src="/previews/view_item.gif" width="30%" />
 <img src="/previews/view_item.png" />
 
 view_item_list
